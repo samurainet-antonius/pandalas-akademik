@@ -1,0 +1,2 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque minima ea ipsum dolorum similique eveniet. Provident nisi vel doloremque accusamus veniam, voluptatem repellendus eum quis hic perspiciatis tempore laboriosam nobis?
