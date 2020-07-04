@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Kelas_model extends CI_Model {
 
 	private $_table = 'kelas';
-	private $_column_order = array(null, 'id_kelas', 'nama_kelas', 'deskripsi_kelas', 'parent', 'status_kelas', null);
-	private $_column_search = array('id_kelas', 'nama_kelas', 'deskripsi_kelas', 'parent');
+	private $_column_order = array(null, 'id_kelas', 'nama_kelas', 'seo_kelas', 'parent', 'status_kelas', null);
+	private $_column_search = array('id_kelas', 'nama_kelas', 'seo_kelas', 'parent');
 
 	public function __construct()
 	{
@@ -46,7 +46,7 @@ class Kelas_model extends CI_Model {
 
 	private function _all_kelas()
 	{
-		$this->db->select('id_kelas,parent,nama_kelas,deskripsi_kelas,status_kelas');
+		$this->db->select('id_kelas,parent,nama_kelas,seo_kelas,status_kelas');
 		$this->db->from($this->_table);
 
 		$i = 0;	
@@ -84,6 +84,42 @@ class Kelas_model extends CI_Model {
 		{
 			$this->db->order_by('id_kelas','DESC');
 		}
+	}
+
+	public function insert(array $data)
+	{
+		$this->db->insert($this->_table, $data);
+	}
+
+
+	public function get_parent_kelas($id = 0)
+	{
+		if ($id > 1 && $this->cek_id($id) == 1) 
+		{
+			$query = $this->db->select('nama_kelas');
+			$query = $this->db->where('id_kelas', $id);
+			$query = $this->db->get($this->_table);
+			$result = $query->row_array();
+			$parent_kelas = $result['nama_kelas'];
+		}
+		else
+		{
+			$parent_kelas = '-';
+		}
+
+		return $parent_kelas;
+	}
+
+	public function cek_id($id = 0)
+	{
+		$id = xss_filter($id,'xss');
+
+		$query = $this->db->select('id_kelas');
+		$query = $this->db->where("BINARY id='$id'", NULL, FALSE);
+		$query = $this->db->get($this->_table);
+		$result = $query->num_rows();
+
+		return $result;
 	}
 
 }
